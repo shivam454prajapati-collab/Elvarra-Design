@@ -28,6 +28,7 @@ import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import Orders from './pages/Orders.jsx'
 import Profile from './pages/Profile.jsx'
+import Admin from './pages/Admin.jsx'
 
 import { useCart } from './context/CartContext.jsx'
 
@@ -86,6 +87,16 @@ export default function App() {
                 </ProtectedRoute>
               </Layout>
             } />
+
+            {/* Admin only */}
+            <Route path="/admin" element={
+              <Layout>
+                <ProtectedRoute adminOnly>
+                  <Admin />
+                </ProtectedRoute>
+              </Layout>
+            } />
+
 
             {/* 404 */}
             <Route path="*" element={

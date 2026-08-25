@@ -309,3 +309,52 @@ export function openRazorpay({ orderId, amount, name, email, phone, description 
   })
   rzp.open()
 }
+
+// ============================================================
+// ADMIN ENDPOINTS
+// ============================================================
+
+export async function apiAdminCreateProduct(productData) {
+  return request('/products', { method: 'POST', body: JSON.stringify(productData) })
+}
+
+export async function apiAdminUpdateProduct(id, productData) {
+  return request(`/products/${id}`, { method: 'PUT', body: JSON.stringify(productData) })
+}
+
+export async function apiAdminDeleteProduct(id) {
+  return request(`/products/${id}`, { method: 'DELETE' })
+}
+
+export async function apiAdminUploadImage(formData) {
+  const token = getToken()
+  const res = await fetch(`${BASE_URL}/products/upload-image`, {
+    method: 'POST',
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: formData,
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.message || 'Image upload failed')
+  }
+  return res.json()
+}
+
+export async function apiAdminGetOrders(params = {}) {
+  const qs = new URLSearchParams(params).toString()
+  return request(`/orders/admin/all?${qs}`)
+}
+
+export async function apiAdminUpdateOrderStatus(id, statusData) {
+  return request(`/orders/admin/${id}/status`, { method: 'PUT', body: JSON.stringify(statusData) })
+}
+
+export async function apiAdminGetCustomOrders(params = {}) {
+  const qs = new URLSearchParams(params).toString()
+  return request(`/custom-orders?${qs}`)
+}
+
+export async function apiAdminUpdateCustomOrder(id, data) {
+  return request(`/custom-orders/${id}`, { method: 'PUT', body: JSON.stringify(data) })
+}
+

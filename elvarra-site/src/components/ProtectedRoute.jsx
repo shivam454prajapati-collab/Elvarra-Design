@@ -33,10 +33,11 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
     return <Navigate to="/signin" state={{ from: location.pathname }} replace />
   }
 
-  // 🔌 ADMIN GUARD — enable once you have role-based access
-  // if (adminOnly && user.role !== 'admin') {
-  //   return <Navigate to="/" replace />
-  // }
+  // 🔌 ADMIN GUARD — verify admin role
+  if (adminOnly && user.role !== 'admin') {
+    return <Navigate to="/" replace />
+  }
 
   return children
 }
+

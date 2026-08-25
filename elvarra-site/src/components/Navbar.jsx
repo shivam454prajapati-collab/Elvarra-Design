@@ -80,11 +80,17 @@ export default function Navbar() {
               </button>
               {dropdownOpen && (
                 <div className="user-dropdown" role="menu">
+                  {user.role === 'admin' && (
+                    <Link to="/admin" style={{ color: 'var(--gold)', fontWeight: 600 }}>
+                      👑 Admin Panel
+                    </Link>
+                  )}
                   <Link to="/orders">My Orders</Link>
                   <Link to="/profile">Profile</Link>
                   <button onClick={handleSignOut} type="button">Sign Out</button>
                 </div>
               )}
+
             </div>
           ) : (
             <Link to="/signin" className="btn-primary nav-signin">Sign In</Link>

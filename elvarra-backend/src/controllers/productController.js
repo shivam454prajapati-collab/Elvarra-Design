@@ -95,4 +95,16 @@ const deleteProduct = asyncHandler(async (req, res) => {
   res.json({ message: 'Product removed.' })
 })
 
-module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct }
+// ── POST /api/products/upload-image (admin) ─────────────────
+const { uploadToCloudinary } = require('../config/cloudinary')
+const uploadProductImage = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'Image file is required.' })
+  }
+  const result = await uploadToCloudinary(req.file.path, 'elvarra/products')
+  res.json({ imageUrl: result.secure_url, publicId: result.public_id })
+})
+
+module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct, uploadProductImage }
+
+
