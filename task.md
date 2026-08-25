@@ -1,0 +1,9 @@
+- [x] Create `.env` file in `elvarra-backend/`
+- [x] Create `.env` file in `elvarra-site/`
+- [x] Add SDK scripts to `elvarra-site/index.html`
+- [x] Wire up real backend calls in `elvarra-site/src/services/api.js`
+- [x] Load dynamic product list in `elvarra-site/src/pages/Home.jsx`
+- [x] Load dynamic product list and filters in `elvarra-site/src/pages/Shop.jsx`
+- [x] Load dynamic product detail in `elvarra-site/src/pages/ProductDetail.jsx`
+- [x] Seed the backend MongoDB database
+- [x] Start servers and verify end-to-end integration (auth, cart, coupon, checkout)
