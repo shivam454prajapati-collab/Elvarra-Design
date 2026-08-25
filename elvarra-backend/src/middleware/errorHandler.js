@@ -39,14 +39,27 @@ const errorHandler = (err, req, res, next) => {
     return res.status(401).json({ message: 'Token expired.', expired: true })
   }
 
-  // Default
+  // Mongoose buffer timeout or database connection errors
+  if (err.name === 'MongooseError' && err.message?.includes('buffering timed out')) {
+    return res.status(503).json({ message: 'Service temporarily unavailable. Please try again in a few moments.' })
+  }
+
+  if (err.name === 'MongooseServerSelectionError' || err.message?.includes('ECONNREFUSED') || err.message?.includes('SSL')) {
+    return res.status(503).json({ message: 'Database connection issue. Please check network settings.' })
+  }
+
+  // Default error masking
   const statusCode = err.statusCode || 500
-  const message = process.env.NODE_ENV === 'production' && statusCode === 500
-    ? 'Something went wrong. Please try again.'
-    : err.message || 'Internal server error'
+  let message = err.message || 'Internal server error'
+
+  // Never expose internal database/query errors to clients
+  if (statusCode === 500 || err.name === 'MongoError' || err.name === 'MongoServerError') {
+    message = 'Something went wrong. Please try again.'
+  }
 
   res.status(statusCode).json({ message })
 }
+
 
 // ── 404 handler ────────────────────────────────────────────────
 const notFound = (req, res) => {
