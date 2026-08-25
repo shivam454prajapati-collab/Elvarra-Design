@@ -274,7 +274,7 @@ export function openRazorpay({ orderId, amount, name, email, phone, description 
     console.warn('[RAZORPAY DEV FALLBACK] Key is placeholder or SDK not loaded. Simulating success...');
     setTimeout(() => {
       onSuccess?.({
-        razorpayOrderId: orderId,
+        razorpayOrderId: orderId || ('ord_mock_' + Date.now()),
         razorpayPaymentId: 'pay_mock_' + Date.now(),
         razorpaySignature: 'sig_mock_' + Date.now(),
       })
@@ -282,33 +282,49 @@ export function openRazorpay({ orderId, amount, name, email, phone, description 
     return
   }
 
-  const rzp = new window.Razorpay({
-    key: keyId,
-    amount,                     // in paise (multiply ₹ by 100)
-    currency: 'INR',
-    name: 'Elvarra',
-    description,
-    order_id: orderId,           // razorpayOrderId from apiCreateOrder()
-    prefill: { name, email, contact: phone },
-    theme: { color: '#C9A84C' },
-    handler: async (response) => {
-      // response = { razorpay_order_id, razorpay_payment_id, razorpay_signature }
-      try {
-        const result = await apiVerifyPayment({
-          razorpayOrderId: response.razorpay_order_id,
-          razorpayPaymentId: response.razorpay_payment_id,
-          razorpaySignature: response.razorpay_signature,
-        })
-        if (result.success) onSuccess?.(result.order)
-        else onFailure?.('Payment verification failed')
-      } catch (e) {
-        onFailure?.(e.message || 'Payment verification failed')
-      }
-    },
-    modal: { ondismiss: () => onFailure?.('Payment cancelled') },
-  })
-  rzp.open()
+  try {
+    const options = {
+      key: keyId,
+      amount,                     // in paise (multiply ₹ by 100)
+      currency: 'INR',
+      name: 'Elvarra',
+      description,
+      prefill: { name, email, contact: phone },
+      theme: { color: '#C9A84C' },
+      handler: async (response) => {
+        // response = { razorpay_order_id, razorpay_payment_id, razorpay_signature }
+        try {
+          const result = await apiVerifyPayment({
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+          })
+          if (result.success) onSuccess?.(result.order)
+          else onFailure?.('Payment verification failed on server')
+        } catch (e) {
+          onFailure?.(e.message || 'Payment verification failed')
+        }
+      },
+      modal: {
+        ondismiss: () => onFailure?.('Payment cancelled by user'),
+      },
+    }
+
+    if (orderId) {
+      options.order_id = orderId
+    }
+
+    const rzp = new window.Razorpay(options)
+    rzp.on('payment.failed', (response) => {
+      onFailure?.(response.error?.description || 'Payment failed')
+    })
+    rzp.open()
+  } catch (err) {
+    console.error('Error opening Razorpay modal:', err)
+    onFailure?.(err.message || 'Failed to open payment gateway')
+  }
 }
+
 
 // ============================================================
 // ADMIN ENDPOINTS

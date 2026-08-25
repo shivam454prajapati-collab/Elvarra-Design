@@ -128,15 +128,20 @@ export default function Checkout() {
         phone: form.phone,
         description: `Elvarra Order ${order.orderNumber}`,
         onSuccess: async (razorpayResponse) => {
-          // Step 3: Verify payment on backend
-          // 🔌 POST /orders/verify-payment → backend checks HMAC signature
-          await apiVerifyPayment(razorpayResponse)
-          clearCart()
-          setPlacedOrder(order)
-          setPayLoading(false)
+          try {
+            // Step 3: Verify payment on backend
+            // 🔌 POST /orders/verify-payment → backend checks HMAC signature
+            await apiVerifyPayment(razorpayResponse)
+            clearCart()
+            setPlacedOrder(order)
+          } catch (err) {
+            setPayError(err.message || 'Payment verification failed.')
+          } finally {
+            setPayLoading(false)
+          }
         },
         onFailure: (reason) => {
-          setPayError(reason === 'Payment cancelled' ? 'Payment was cancelled.' : 'Payment failed. Please try again.')
+          setPayError(reason === 'Payment cancelled by user' ? 'Payment was cancelled.' : (reason || 'Payment failed. Please try again.'))
           setPayLoading(false)
         },
       })
@@ -145,6 +150,7 @@ export default function Checkout() {
       setPayLoading(false)
     }
   }
+
 
   // ─── Empty cart guard ─────────────────────────────────────
   if (cart.length === 0 && !placedOrder) return (
