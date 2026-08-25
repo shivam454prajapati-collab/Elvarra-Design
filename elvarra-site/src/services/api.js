@@ -273,14 +273,11 @@ export function openRazorpay({ orderId, amount, name, email, phone, description 
   if (!keyId || keyId.includes('XXXX') || typeof window.Razorpay === 'undefined') {
     console.warn('[RAZORPAY DEV FALLBACK] Key is placeholder or SDK not loaded. Simulating success...');
     setTimeout(() => {
-      onSuccess?.({
-        razorpayOrderId: orderId || ('ord_mock_' + Date.now()),
-        razorpayPaymentId: 'pay_mock_' + Date.now(),
-        razorpaySignature: 'sig_mock_' + Date.now(),
-      })
+      onSuccess?.({ orderNumber: 'ELV-' + Math.floor(100000 + Math.random() * 900000), status: 'confirmed' })
     }, 1000)
     return
   }
+
 
   try {
     const options = {

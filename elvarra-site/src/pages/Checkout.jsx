@@ -119,7 +119,7 @@ export default function Checkout() {
       }
 
       // Step 2: Open Razorpay modal
-      // 🔌 openRazorpay() is in services/api.js — see that file for full setup
+      // 🔌 openRazorpay() in services/api.js handles popup and server HMAC verification
       openRazorpay({
         orderId: order.razorpayOrderId,
         amount: grand * 100,           // paise
@@ -127,18 +127,10 @@ export default function Checkout() {
         email: form.email,
         phone: form.phone,
         description: `Elvarra Order ${order.orderNumber}`,
-        onSuccess: async (razorpayResponse) => {
-          try {
-            // Step 3: Verify payment on backend
-            // 🔌 POST /orders/verify-payment → backend checks HMAC signature
-            await apiVerifyPayment(razorpayResponse)
-            clearCart()
-            setPlacedOrder(order)
-          } catch (err) {
-            setPayError(err.message || 'Payment verification failed.')
-          } finally {
-            setPayLoading(false)
-          }
+        onSuccess: (verifiedOrder) => {
+          clearCart()
+          setPlacedOrder(verifiedOrder || order)
+          setPayLoading(false)
         },
         onFailure: (reason) => {
           setPayError(reason === 'Payment cancelled by user' ? 'Payment was cancelled.' : (reason || 'Payment failed. Please try again.'))
@@ -150,6 +142,7 @@ export default function Checkout() {
       setPayLoading(false)
     }
   }
+
 
 
   // ─── Empty cart guard ─────────────────────────────────────
