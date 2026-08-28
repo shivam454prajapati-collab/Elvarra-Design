@@ -30,6 +30,9 @@ import Orders from './pages/Orders.jsx'
 import OrderDetail from './pages/OrderDetail.jsx'
 import Profile from './pages/Profile.jsx'
 import Admin from './pages/Admin.jsx'
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
+import TermsOfService from './pages/TermsOfService.jsx'
+
 
 
 import { useCart } from './context/CartContext.jsx'
@@ -65,7 +68,12 @@ export default function App() {
             <Route path="/custom"  element={<Layout><Custom /></Layout>} />
             <Route path="/about"   element={<Layout><About /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
+            <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+            <Route path="/privacy"        element={<Layout><PrivacyPolicy /></Layout>} />
+            <Route path="/terms-of-service" element={<Layout><TermsOfService /></Layout>} />
+            <Route path="/terms"          element={<Layout><TermsOfService /></Layout>} />
             <Route path="/signin"  element={<Layout hideFooter><SignIn /></Layout>} />
+
 
             {/* Protected — require login */}
             <Route path="/checkout" element={

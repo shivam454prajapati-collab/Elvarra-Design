@@ -1,0 +1,145 @@
+.legal-page {
+  padding: 120px 0 80px;
+  min-height: 85vh;
+  background: var(--cream);
+}
+
+.legal-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.legal-breadcrumb a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.legal-breadcrumb a:hover {
+  color: var(--gold);
+}
+
+.legal-breadcrumb .current {
+  color: var(--charcoal);
+  font-weight: 600;
+}
+
+.legal-header {
+  margin-bottom: 32px;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legal-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 44px);
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.legal-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.legal-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.legal-content section {
+  margin-bottom: 32px;
+}
+
+.legal-content section:last-child {
+  margin-bottom: 0;
+}
+
+.legal-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--charcoal);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.legal-content p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #4a4a4a;
+  margin-bottom: 12px;
+}
+
+.legal-content ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+
+.legal-content li {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #4a4a4a;
+  margin-bottom: 8px;
+}
+
+.legal-content strong {
+  color: var(--charcoal);
+}
+
+.legal-inline-link {
+  color: var(--gold-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.legal-inline-link:hover {
+  color: var(--charcoal);
+}
+
+.legal-alert {
+  background: #fdfaf3;
+  border-left: 4px solid var(--gold);
+  border-radius: 6px;
+  padding: 14px 18px;
+  font-size: 13.5px;
+  color: #5a4a20;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+.legal-contact-box {
+  background: #faf8f5;
+  border-radius: 10px;
+  border: 1px solid var(--gray-200);
+  padding: 18px 22px;
+  margin-top: 14px;
+}
+
+.legal-contact-box p {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--charcoal);
+}
+
+.legal-contact-box a {
+  color: var(--gold-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.legal-contact-box a:hover {
+  text-decoration: underline;
+}
