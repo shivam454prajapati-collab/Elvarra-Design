@@ -484,16 +484,315 @@
   margin-bottom: 12px;
 }
 
-/* Print Invoice Styles */
+.print-only {
+  display: none;
+}
+
+/* ── PRINT INVOICE STYLES (A4 Single-Page Pro Layout) ── */
 @media print {
-  .no-print, nav, footer, .navbar {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-size: 12px !important;
+  }
+
+  .no-print,
+  nav,
+  footer,
+  .navbar,
+  .order-breadcrumb,
+  .order-tracker-card,
+  .order-detail-header,
+  .order-help-box {
     display: none !important;
   }
+
+  .print-only {
+    display: block !important;
+  }
+
   .order-detail-page {
     padding: 0 !important;
-    background: #fff !important;
+    background: #ffffff !important;
+    min-height: auto !important;
   }
-  .order-detail-grid {
+
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Print Header */
+  .print-invoice-header {
+    border-bottom: 2px solid #111111;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+  }
+
+  .print-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .print-brand-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .print-brand-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .print-brand-logo {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+  }
+
+  .print-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #111111;
+    display: block;
+    line-height: 1;
+  }
+
+  .print-brand-sub {
+    font-size: 11px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .print-company-info {
+    font-size: 11px;
+    color: #555555;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+
+  .print-invoice-meta {
+    text-align: right;
+  }
+
+  .print-doc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .print-meta-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 11px;
+    color: #444444;
+  }
+
+  .print-meta-grid span {
+    margin-right: 6px;
+    color: #777777;
+  }
+
+  .print-status-stamp {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 11px;
+    border: 1px solid #16a34a;
+    color: #16a34a;
+    background: #f0fdf4;
+  }
+
+  .print-status-stamp.pending {
+    border-color: #ca8a04;
+    color: #ca8a04;
+    background: #fefce8;
+  }
+
+  /* Billing & Shipping 2-col box */
+  .print-billing-grid {
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: #fafafa !important;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+
+  .print-bill-box h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #111111;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 4px;
+  }
+
+  .print-bill-box p {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #444444;
+    margin: 2px 0;
+  }
+
+  .print-bill-box .print-name {
+    font-weight: 700;
+    color: #111111;
+    font-size: 12px;
+  }
+
+  /* Items List on Print */
+  .order-detail-grid {
+    display: block !important;
+  }
+
+  .order-items-card {
+    border: 1px solid #e5e5e5 !important;
+    box-shadow: none !important;
+    padding: 14px 16px !important;
+    border-radius: 8px !important;
+    margin-bottom: 14px !important;
+    background: #ffffff !important;
+  }
+
+  .order-items-card-header {
+    margin-bottom: 12px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .order-items-card-header h3 {
+    font-size: 14px !important;
+  }
+
+  .order-items-list {
+    gap: 10px !important;
+  }
+
+  .order-item-row-detailed {
+    background: #ffffff !important;
+    border: 1px solid #eeeeee !important;
+    box-shadow: none !important;
+    padding: 10px 14px !important;
+    border-radius: 6px !important;
+    gap: 14px !important;
+    transform: none !important;
+  }
+
+  .order-item-img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .order-item-main h4 {
+    font-size: 14px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .order-tag {
+    padding: 2px 8px !important;
+    font-size: 11px !important;
+    border-color: #e5e5e5 !important;
+  }
+
+  .order-item-subtotal {
+    font-size: 15px !important;
+  }
+
+  /* Summary Section on Print */
+  .order-sidebar-col {
+    display: block !important;
+  }
+
+  .print-summary-section {
+    border: 1px solid #e5e5e5 !important;
+    box-shadow: none !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    background: #fafafa !important;
+    margin-bottom: 16px !important;
+  }
+
+  .print-summary-section h3 {
+    font-size: 13px !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .order-cost-breakdown {
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+  }
+
+  .cost-row {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .cost-row.grand-total {
+    font-size: 15px !important;
+  }
+
+  /* Print Footer */
+  .print-invoice-footer {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 12px;
+    margin-top: 14px;
+    gap: 20px;
+  }
+
+  .print-footer-notes {
+    flex: 1;
+    font-size: 10.5px;
+    color: #666666;
+    line-height: 1.45;
+  }
+
+  .print-footer-notes strong {
+    color: #111111;
+  }
+
+  .print-auth-sig {
+    text-align: center;
+    min-width: 140px;
+    font-size: 11px;
+    color: #444444;
+  }
+
+  .sig-line {
+    width: 120px;
+    height: 1px;
+    background: #111111;
+    margin: 0 auto 6px;
+  }
+
+  .sig-brand {
+    font-weight: 700;
+    color: #111111;
   }
 }
+

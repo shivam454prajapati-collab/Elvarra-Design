@@ -112,8 +112,75 @@ export default function OrderDetail() {
           <span className="current">{order.orderNumber}</span>
         </nav>
 
-        {/* Top Header */}
-        <div className="order-detail-header">
+        {/* ── PRINT-ONLY INVOICE HEADER ── */}
+        <div className="print-invoice-header print-only">
+          <div className="print-header-top">
+            <div className="print-brand-left">
+              <div className="print-brand-title-wrap">
+                <img src="/logo.webp" alt="Elvarra Logo" className="print-brand-logo" />
+                <div>
+                  <span className="print-brand-name">ELVARRA</span>
+                  <span className="print-brand-sub">Premium Custom Apparel</span>
+                </div>
+              </div>
+              <p className="print-company-info">
+                Elvarra Apparel India Private Limited<br />
+                hello@elvarra.com · www.elvarra.com · +91 98765 43210
+              </p>
+            </div>
+
+            <div className="print-invoice-meta">
+              <h2 className="print-doc-title">TAX INVOICE / RECEIPT</h2>
+              <div className="print-meta-grid">
+                <div>
+                  <span>Order Number:</span>
+                  <strong>{order.orderNumber}</strong>
+                </div>
+                <div>
+                  <span>Order Date:</span>
+                  <strong>{orderDate}</strong>
+                </div>
+                <div>
+                  <span>Payment Mode:</span>
+                  <strong style={{ textTransform: 'uppercase' }}>
+                    {order.paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : order.paymentMethod}
+                  </strong>
+                </div>
+                <div>
+                  <span>Payment Status:</span>
+                  <span className={`print-status-stamp ${order.paymentStatus}`}>
+                    {order.paymentStatus === 'paid' ? '✓ PAID' : 'PENDING'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="print-billing-grid">
+            <div className="print-bill-box">
+              <h4>Billed & Shipped To:</h4>
+              <p className="print-name">{order.shippingAddress?.name}</p>
+              <p>{order.shippingAddress?.address}</p>
+              <p>
+                {order.shippingAddress?.city}
+                {order.shippingAddress?.state ? `, ${order.shippingAddress.state}` : ''} — {order.shippingAddress?.pincode}
+              </p>
+              <p>Phone: {order.shippingAddress?.phone}</p>
+              <p>Email: {order.shippingAddress?.email}</p>
+            </div>
+            <div className="print-bill-box seller-box">
+              <h4>Sold & Dispatched By:</h4>
+              <p><strong>Elvarra India Hub</strong></p>
+              <p>Textile & Custom Print Park, Sector 4</p>
+              <p>Mumbai, Maharashtra — 400069, India</p>
+              <p>GSTIN: 27AABCE1234F1Z5</p>
+              <p>Support: support@elvarra.com</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Top Header (Web only) */}
+        <div className="order-detail-header no-print">
           <div>
             <div className="order-number-title">
               <h1>Order #{order.orderNumber}</h1>
@@ -137,9 +204,9 @@ export default function OrderDetail() {
           </div>
         </div>
 
-        {/* Progress Tracker (only if not cancelled) */}
+        {/* Progress Tracker (Web only) */}
         {order.status !== 'cancelled' && (
-          <div className="order-tracker-card">
+          <div className="order-tracker-card no-print">
             <div className="tracker-steps">
               {STATUS_STEPS.map((step, idx) => {
                 const isCompleted = idx <= currentStep
@@ -213,8 +280,8 @@ export default function OrderDetail() {
 
           {/* Right Column: Address + Payment Summary */}
           <div className="order-sidebar-col">
-            {/* Delivery Address */}
-            <div className="order-card-section">
+            {/* Delivery Address (Web only, in print it's in header) */}
+            <div className="order-card-section no-print">
               <h3>Delivery Address</h3>
               <div className="address-content">
                 <p className="recipient-name"><strong>{order.shippingAddress?.name}</strong></p>
@@ -229,16 +296,16 @@ export default function OrderDetail() {
             </div>
 
             {/* Payment Summary */}
-            <div className="order-card-section">
-              <h3>Payment Details</h3>
+            <div className="order-card-section print-summary-section">
+              <h3>Payment & Order Summary</h3>
               <div className="payment-method-row">
-                <span>Method:</span>
+                <span>Payment Method:</span>
                 <strong style={{ textTransform: 'uppercase' }}>
                   {order.paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : order.paymentMethod}
                 </strong>
               </div>
               <div className="payment-method-row">
-                <span>Status:</span>
+                <span>Payment Status:</span>
                 <span className={`payment-status-tag ${order.paymentStatus}`}>
                   {order.paymentStatus === 'paid' ? '✓ Paid' : '⏳ Payment Pending'}
                 </span>
@@ -267,7 +334,7 @@ export default function OrderDetail() {
                 )}
                 <div className="cost-divider"></div>
                 <div className="cost-row grand-total">
-                  <span>Total Paid</span>
+                  <span>Total Amount</span>
                   <span>₹{order.total?.toLocaleString()}</span>
                 </div>
               </div>
@@ -282,7 +349,23 @@ export default function OrderDetail() {
             </div>
           </div>
         </div>
+
+        {/* ── PRINT-ONLY INVOICE FOOTER ── */}
+        <div className="print-invoice-footer print-only">
+          <div className="print-footer-notes">
+            <p><strong>Customer Notes & Return Policy:</strong></p>
+            <p>• Thank you for shopping with Elvarra! Returns or replacements are accepted within 7 days of delivery.</p>
+            <p>• For any inquiries, please contact <strong>hello@elvarra.com</strong> mentioning your Order ID <strong>#{order.orderNumber}</strong>.</p>
+            <p>• This is a computer-generated official tax invoice and requires no physical signature.</p>
+          </div>
+          <div className="print-auth-sig">
+            <div className="sig-line"></div>
+            <p><strong>Authorized Signatory</strong></p>
+            <p className="sig-brand">Elvarra Apparel</p>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
