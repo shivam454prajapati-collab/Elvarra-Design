@@ -27,8 +27,10 @@ import SignIn from './pages/SignIn.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import Orders from './pages/Orders.jsx'
+import OrderDetail from './pages/OrderDetail.jsx'
 import Profile from './pages/Profile.jsx'
 import Admin from './pages/Admin.jsx'
+
 
 import { useCart } from './context/CartContext.jsx'
 
@@ -80,7 +82,15 @@ export default function App() {
                 </ProtectedRoute>
               </Layout>
             } />
+            <Route path="/orders/:id" element={
+              <Layout>
+                <ProtectedRoute>
+                  <OrderDetail />
+                </ProtectedRoute>
+              </Layout>
+            } />
             <Route path="/profile" element={
+
               <Layout>
                 <ProtectedRoute>
                   <Profile />

@@ -1,6 +1,8 @@
+const mongoose = require('mongoose')
 const crypto = require('crypto')
 const Razorpay = require('razorpay')
 const Order = require('../models/Order')
+
 const Product = require('../models/Product')
 const Coupon = require('../models/Coupon')
 const { asyncHandler } = require('../middleware/errorHandler')
@@ -192,10 +194,25 @@ const getOrders = asyncHandler(async (req, res) => {
 
 // ── GET /api/orders/:id ────────────────────────────────────────
 const getOrder = asyncHandler(async (req, res) => {
-  const order = await Order.findOne({ _id: req.params.id, user: req.user._id })
+  const { id } = req.params
+  const isObjectId = mongoose.Types.ObjectId.isValid(id)
+
+  const filter = {
+    $or: [
+      ...(isObjectId ? [{ _id: id }] : []),
+      { orderNumber: id.toUpperCase() },
+    ],
+  }
+
+  if (req.user.role !== 'admin') {
+    filter.user = req.user._id
+  }
+
+  const order = await Order.findOne(filter)
   if (!order) return res.status(404).json({ message: 'Order not found.' })
   res.json({ order })
 })
+
 
 // ── PUT /api/orders/:id/status (admin) ────────────────────────
 const updateOrderStatus = asyncHandler(async (req, res) => {

@@ -118,11 +118,12 @@ export default function Orders() {
                   <div className="order-card-footer">
                     <span className="order-total">Total: <strong>₹{order.total.toLocaleString()}</strong></span>
                     <div className="order-actions">
-                      {/* 🔌 Link to /orders/:id for full order detail page */}
+                      {/* 🔌 Link to /orders/:id or /orders/:orderNumber */}
                       <button className="btn-outline" style={{fontSize:12,padding:'7px 14px'}}
-                        onClick={() => navigate(`/orders/${orderId}`)}>
+                        onClick={() => navigate(`/orders/${order.orderNumber || orderId}`)}>
                         View Details
                       </button>
+
                       {order.status === 'delivered' && (
                         <button className="btn-primary" style={{fontSize:12,padding:'7px 14px'}}
                           onClick={() => navigate('/shop')}>
