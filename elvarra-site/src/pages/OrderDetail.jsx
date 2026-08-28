@@ -167,34 +167,49 @@ export default function OrderDetail() {
         <div className="order-detail-grid">
           {/* Left Column: Items */}
           <div className="order-items-card">
-            <h3>Items in this Order ({order.items?.length || 0})</h3>
+            <div className="order-items-card-header">
+              <h3>Items in this Order</h3>
+              <span className="items-count-badge">{order.items?.length || 0} product{order.items?.length !== 1 ? 's' : ''}</span>
+            </div>
             <div className="order-items-list">
               {order.items?.map((item, idx) => (
                 <div className="order-item-row-detailed" key={idx}>
-                  <img src={item.image || '/logo.webp'} alt={item.name} className="order-item-img" />
+                  <div className="order-item-img-wrap">
+                    <img src={item.image || '/logo.webp'} alt={item.name} className="order-item-img" />
+                    <span className="item-qty-badge">×{item.qty}</span>
+                  </div>
+
                   <div className="order-item-main">
                     <h4>{item.name}</h4>
-                    <div className="order-item-specs">
-                      <span>Size: <strong>{item.selectedSize || item.size}</strong></span>
+                    <div className="order-item-tags">
+                      <span className="order-tag size-tag">
+                        Size: <strong>{item.selectedSize || item.size}</strong>
+                      </span>
                       {item.selectedColor && (
-                        <span className="order-color-pill">
+                        <span className="order-tag color-tag">
                           Color:
                           <span className="color-swatch-circle" style={{ background: item.selectedColor }} />
-                          <small>{item.selectedColor}</small>
+                          <strong>{item.selectedColor}</strong>
                         </span>
                       )}
-                    </div>
-                    <div className="order-item-pricing">
-                      <span>₹{item.price.toLocaleString()} × {item.qty}</span>
+                      <span className="order-tag unit-price-tag">
+                        ₹{item.price.toLocaleString()} / pc
+                      </span>
                     </div>
                   </div>
-                  <div className="order-item-subtotal">
-                    ₹{(item.price * item.qty).toLocaleString()}
+
+                  <div className="order-item-pricing-box">
+                    <span className="item-subtotal-label">Item Total</span>
+                    <span className="order-item-subtotal">
+                      ₹{(item.price * item.qty).toLocaleString()}
+                    </span>
+                    <small className="item-breakdown-text">({item.qty} × ₹{item.price.toLocaleString()})</small>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
 
           {/* Right Column: Address + Payment Summary */}
           <div className="order-sidebar-col">
